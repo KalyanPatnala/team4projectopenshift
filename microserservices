@@ -1,0 +1,68 @@
+# 1. Prepare Your Microservice Code
+# Ensure that your microservice application code is ready for deployment. It should include:
+
+# A working source code repository (e.g., GitHub, GitLab).
+# A Dockerfile or a supported build framework (e.g., for Java, Python, Node.js, etc.).
+
+# 2. Install OpenShift CLI (oc)
+# Download and install the oc command-line tool to interact with OpenShift from your terminal.
+
+# Installation guide: https://docs.openshift.com/container-# platform/latest/cli_reference/openshift_cli/getting-started-cli.html
+
+# 3. Login into OpenShift
+
+oc login <openshift-cluster-url>
+
+# 4. Create new namespace/project
+
+oc new-project my-microservice
+
+# 5. Select a Base S2I Builder Image
+
+oc get imagestreams -n openshift
+
+Select the appropriate base image for your microservice.
+
+# 6. Deploy Your Microservice Using S2I
+# Use the oc new-app command to initiate an S2I build from your source code. For example, if you have a Node.js application:
+
+oc new-app --name=my-node-microservice nodejs~https://github.com/user/repository.git
+
+# Replace nodejs with the correct builder image for your application (e.g., python, java, etc.). The new-app command will:
+# Clone the repository.
+# Build the application image using the S2I process.
+# Deploy the microservice.
+
+# 7. Check the Build and Deployment Status
+# After the build process is triggered, you can monitor it using:
+
+oc logs -f bc/my-node-microservice
+
+# 8. Expose Your Microservice
+# Expose your microservice by creating a route so it can be accessed externally.
+
+oc expose svc/my-node-microservice
+
+# You can now access your microservice using the route URL created by OpenShift.
+
+# 9. Manage Scaling and Updates
+# OpenShift automatically manages scaling, health checks, and rolling updates. You can scale your microservice easily using the following command:
+
+oc scale --replicas=3 deployment/my-node-microservice
+
+# 10. View and Manage Microservices in OpenShift Web Console
+# You can view your application in the OpenShift Web Console, monitor logs, and review build history.
+
+# Summary of Commands:
+# Login: oc login <openshift-cluster-url>
+# Create project: oc new-project my-microservice
+# Select S2I builder image: oc get imagestreams -n openshift
+# Create app: oc new-app --name=my-microservice builder~https://github.com/user/repository.git
+# Monitor build: oc logs -f bc/my-microservice
+# Expose service: oc expose svc/my-microservice
+# Scale app: oc scale --replicas=3 deployment/my-microservice
+
+
+
+
+
